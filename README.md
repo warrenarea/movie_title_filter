@@ -1,5 +1,6 @@
-# movie_title_filter
-Filter out common text formatting from a movie file.  Returns a simplified output with a date, if it has one.
+# Movie Title Filter
+Filter out common text formatting from a movie file. <br>
+Returns a simplified output with a date, if it has one.
 
 <img src="./movie_title_filter_image_1.png" />
 
