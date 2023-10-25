@@ -107,8 +107,8 @@ def request_title(title=None):
 
     return title, date
 
-title, date = request_title()  # No title passed? Check command-line arguments.
+movie_title, release_year = request_title()  # No title passed? Check command-line arguments.
 #title, date = request_title("shining.time.station.2024.1080p.blueray.x264")  # or pass the title.
 
 # Print out results.
-print("Title: " + str(title) + " " +  str(date))
+print("Title: " + str(movie_title) + " " +  str(release_year))
