@@ -4,9 +4,9 @@ Returns a simplified output with a date, if it has one.
 
 
 * First strips out all of the brackets.
-* Searches through the title string, and looks for the "date".  <br>
+* Searches through the title string, and looks for the release year.  <br>
   ie. a date between 1920 and 2050. <br>
-  Function returns an array of the date(s) found and picks the last one.
+  the function returns an array of the years found and picks the last one.
 * If a date was found, parse out the title left of the date.
 * No date? Parses out codecs, video codecs, resolutions, and provide a result. 
 
