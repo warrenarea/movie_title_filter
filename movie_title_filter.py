@@ -1,4 +1,35 @@
-import sys,os      # Common imports, sys to get command-line arguments. os to exit back to terminal.
+# -*- coding: utf8 -*-
+#
+#  Movie Title Filter 2023.Oct.24
+#  ________________________________
+#  movie_title_filter.py
+#  
+#  Written by Warren
+#
+"""
+    Filter out common torrent formatting from a video file.
+    Returns a simplified output with the title and a release date, if it has one.
+    _________________________________________________________________________________________
+    
+    Usage:
+            python.exe .\movie_title_filter.py movie file name (2023) etc extra data here
+            
+        outputs:
+           
+           movie file name (2023)
+           
+    Usage:  
+     
+           import movie_title_filter
+           movie_title, release_year =  movie_title_filter.request_title("movie file name (2023) etc. extra data here")
+           print(f"\r\n Title: {movie_title} {release_year} ")
+           
+    Example:
+     
+           python.exe .\movie_title_filter.py shining.time.station.2024.1080p.blueray.x264
+
+"""
+import sys #  Use 'sys' module to get command-line arguments.
 
 # Arrays of strings to parse out.
 video_sources     = ["web","ahdtv","bd25","bd5","bd50","bd9","bdr","bdrip","bdscr","bluray","blueray","bluray","blurayrip","brrip","cam","cam(ts)","camrip","ddc","dhrip","dsr","dsrip","dsrrip","dth","dthrip","dtv","dvb","dvbrip","dvdfull","dvd5","dvd9","dvdr","dvdrip","dvdscr","dvdscreener","hdts","hdtv","hdcam","hdcamrip","hddvdrip","hdrip","hdts","hdtv","hdtvrip","hdtvrip","iptvrip","ldrip","mbluray","mdvdr","pdtv","pdtv","pdtvrip","pdtvrip","ppv","ppvwebdl","ppv.hdtv","ppvrip","r5line","satrip","satrip","scr","screener","sdtv","std","tc","telecine","telesync","ts","tvrip","tvrip","vcdrip","vhsrip","vhsscr","vodr","vodrip","wbbrip","webdl","webdlrip","webdl","webdldvdrip","webdlrip","webrip"]
@@ -13,8 +44,7 @@ video_resolutions = ["1080i","1080p","1440i","1440p","2160i","2160p","360i","360
 # Find a date between 1920 to 2070 and then return all array positions of the dates.
 def sift_dates(title):
     title_grouping = title.split(".")
-    
-    date_entries = [0]
+    date_entries = [0] # Initial entry.
     for index, look_for_date in enumerate(title_grouping):
         for date_range in range(1920,2070):
             if str(date_range) in look_for_date:
@@ -65,7 +95,6 @@ def remove_excess_spaces(title):
         title      = title.replace("  "," ")
         title      = title.replace(". "," ")
         title      = title.replace("  "," ")
-    title = title.replace(" ",".")
     return title
 
 
@@ -75,13 +104,25 @@ def request_title(title=None):
             title = sys.argv[1:]
             title = " ".join(title)
         else:    
+            print("\r\n  Removes excess text out of a movie filename, and only prints the movie title and the release year. \r\n")
+            print(" " + ("_" * 90))
             print("\r\n Usage: python.exe .\movie_title_filter.py The Movie Name (Year) And Excess Text. ")
-            print(" " + ("_" * 50))
-            print(" Formats excess text out of text. ")
-            os._exit(0)
+            print("\r\n         returns:  (Movie Name, Release Year) ")
+            print(" " + ("_" * 90))
+            print("\r\n Usage: ")
+            print("\r\n     import movie_title_filter ")
+            print("     movie_title, release_year = movie_title_filter.request_title(\"Movie Name Here (2023) Etc. Text\") ")
+            print("     print(f\"Title: {movie_title} {release_year} \") \r\n")
+            print(" " + ("_" * 90))
+            print("\r\n Example: ")
+            print("\r\n       python.exe .\movie_title_filter.py shining.time.station.2024.1080p.blueray.x264 ")
+            print(" " + ("_" * 90) + "\r\n")
             
-    title = remove_excess_spaces(title)   
-
+            return None, None
+            
+    
+    title = title.replace(" ",".")
+    
     title      = sift_brackets(title)   # Remove brackets.
     last_date  = sift_dates(title)[-1]  # Get last date.
 
@@ -92,6 +133,7 @@ def request_title(title=None):
         title      = sift_through(title, audio_channels)
         title      = sift_through(title, release_props)
         title      = " ".join(title)
+        title = remove_excess_spaces(title)   
     else:   
         title_str   = title.replace("."," ")
         title_split = title_str.split(" ")
@@ -99,7 +141,8 @@ def request_title(title=None):
 
         title =  title_split[0 : int(last_date)]     
         title     = " ".join(title)
-
+        title = remove_excess_spaces(title)   
+        
     if last_date != 0:
         date = "(" + title_split[last_date][:4] + ")"
     else:
@@ -107,8 +150,9 @@ def request_title(title=None):
 
     return title, date
 
-movie_title, release_year = request_title()  # No title passed? Check command-line arguments.
-#title, date = request_title("shining.time.station.2024.1080p.blueray.x264")  # or pass the title.
-
-# Print out results.
-print("Title: " + str(movie_title) + " " +  str(release_year))
+# Script run from command-line.
+if __name__ == "__main__":  
+    movie_title, release_year = request_title()          # No title passed? Use command line arguments.
+    print(f"\r\n Title: {movie_title} {release_year} ")  # Print out results.
+else:                                                    # If called from another script.
+    pass 
